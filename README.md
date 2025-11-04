@@ -5,6 +5,9 @@
 ## 在线网站
 进入在线网站直接使用：https://smart-excalidraw.aizhi.site/
 
+## English Version
+Read the English version: [README_EN.md](README_EN.md)
+
 ## 效果预览
 操作界面
 <img width="2330" height="1255" alt="PixPin_2025-10-31_17-14-27" src="https://github.com/user-attachments/assets/5319ad5c-c507-42e0-b67a-e9dfb2d7ecfa" />
