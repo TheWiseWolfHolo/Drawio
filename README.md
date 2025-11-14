@@ -1,85 +1,89 @@
-# Smart Drawio
+# Smart Drawio Next
 
-> **用自然语言，绘制专业图表**
+> 用自然语言或参考图片，几秒钟生成==可编辑的专业科研== Draw.io 图表。
 
 ## 在线网站
-进入在线网站直接使用：https://smart-excalidraw.aizhi.site/
 
-🚀🚀🚀 限时福利
+进入在线网站直接使用：https://smart-drawio-next.vercel.app/
 
-添加底部作者微信进群可领取免费claude-4.5-sonnet key
-
-## English Version
-Read the English version: [README_EN.md](README_EN.md)
+(需要自己有API-Key)
 
 ## 效果预览
-操作界面
-<img width="2330" height="1255" alt="PixPin_2025-10-31_17-14-27" src="https://github.com/user-attachments/assets/5319ad5c-c507-42e0-b67a-e9dfb2d7ecfa" />
-技术架构图
-<img width="1920" height="1134" alt="Untitled-2025-11-03-1105" src="https://github.com/user-attachments/assets/d2e01c4e-d300-4c20-bd98-d056e4f02102" />
-信息图
-<img width="2183" height="828" alt="Untitled-2025-11-03-1054" src="https://github.com/user-attachments/assets/0e46e8da-fe64-40a9-911b-f6c0e5589bae" />
 
+Transformer
 
+![4a57649c290de1d64c5d6a8cf966d6ef](F:\xwechat_files\wxid_oyngmns61x3e22_e12d\temp\RWTemp\2025-11\9e20f478899dc29eb19741386f9343c8\4a57649c290de1d64c5d6a8cf966d6ef.png)
 
-## ✨ 核心特性
+Swin-Transformer
 
-### 🎯 AI 驱动，效果出众
-通过先进的大语言模型理解你的需求，生成结构清晰、布局合理的专业级图表。
+![88ba71b9a97ecee13420c46964325b1a](F:\xwechat_files\wxid_oyngmns61x3e22_e12d\temp\RWTemp\2025-11\9e20f478899dc29eb19741386f9343c8\88ba71b9a97ecee13420c46964325b1a.png)
 
-### 🔗 独创连接算法
-采用独创的智能箭头优化算法，自动计算最佳连接点，确保图表井然有序、逻辑清晰，告别混乱的线条交叉。
+CLIP
 
-### 📊 丰富图表类型
-支持 20+ 种图表类型，包括流程图、架构图、时序图、ER 图、思维导图等。也可以让AI根据你的描述自动选择最合适的图表类型。
+![adb1ea750dc5c6f29f7d1a11987a1e7d](F:\xwechat_files\wxid_oyngmns61x3e22_e12d\temp\RWTemp\2025-11\9e20f478899dc29eb19741386f9343c8\adb1ea750dc5c6f29f7d1a11987a1e7d.png)
 
-### 🎨 完美 Draw.io 集成
-生成的图表完全基于 Draw.io 格式，可以在画布上自由编辑、调整样式、添加细节，实现 AI 生成与手动精修的完美结合。
+ProSST
 
-### ⚡ 开箱即用
-只需配置一个 AI API 密钥即可开始使用，无需复杂的环境搭建。所有配置保存在本地浏览器，隐私安全有保障。
+![a3b0bd585a95d9e5ff31146801b8f6cc](F:\xwechat_files\wxid_oyngmns61x3e22_e12d\temp\RWTemp\2025-11\a3b0bd585a95d9e5ff31146801b8f6cc.png)
 
+## 项目简介
 
+[smart-drawio-next](https://github.com/yunshenwuchuxun/smart-drawio-next) 将 Next.js 16、Draw.io embed 以及流式大模型调用组合在一起，让你可以：
 
-## 🚀 快速开始
+- 使用自然语言描述或上传截图，自动生成结构化图表；
+- 在 Monaco Editor 中微调生成的 JSON / XML 代码；
+- 将结果一键同步到内嵌的 draw.io 画布进行可视化调整；
+- 通过高级优化面板让 AI 继续清理布局、统一样式或添加注释。
 
-### 方式一：使用访问密码
+项目已经内置了多模型配置、访问密码、历史记录、通知系统等配套功能，可以直接部署为个人效率工具或团队内部服务。
 
-如果服务器管理员已配置访问密码，你可以直接使用服务器端的 LLM 配置，无需自己提供 API Key：
+## 功能亮点
 
-1. 点击右上角的 **"访问密码"** 按钮
-2. 输入管理员提供的访问密码
-3. 点击 **"验证密码"** 测试连接
-4. 勾选 **"启用访问密码"** 并保存
+- **LLM 原生绘图体验**：流式显示生成进度，支持“继续生成”拆分长内容；可手动指定 20+ 图表类型或让模型自动选择（`lib/constants.js`）。
+- **多模态输入**：拖拽 PNG/JPG/WebP/GIF（≤5 MB）或使用文件选择，配合 Vision 模型将已有图纸转成可编辑信息（`components/ImageUpload`）。
+- **双画布联动**：Monaco 编辑器负责查看/修改原始代码，draw.io iframe 负责渲染与微调；支持随时重新应用代码（`components/CodeEditor` + `components/DrawioCanvas`）。
+- **智能优化链路**：一键修复箭头锚点、线条宽度等常见问题（`lib/optimizeArrows`），或通过高级优化面板勾选/自定义需求交给 AI 再处理（`components/OptimizationPanel`）。
+- **配置管理器**：UI 里即可创建、复制、导入/导出任意数量的 OpenAI/Anthropic 兼容配置，支持在线测试模型列表（`components/ConfigManager`）。
+- **历史记录 & 通知**：最近 20 条生成记录保存在浏览器 localStorage，可随时回放（`lib/history-manager`）；通知、确认弹窗等提升整体 UX。
 
-启用后，应用将优先使用服务器端配置，你无需配置自己的 API Key 即可开始创作！
+## 界面与模块
 
-### 方式二：配置自己的 AI
+1. **交互区（Chat + ImageUpload）**  
+   - 选择图表类型、输入自然语言或上传参考图片；  
+   - 支持中途停止、继续生成、查看 API 错误提示。
+2. **生成代码区（CodeEditor）**  
+   - Monaco Editor 展示 JSON / XML，提供清空、优化、高级优化、应用等动作；  
+   - JSON 解析失败会即时提示错误来源。
+3. **画布区（DrawioCanvas / ExcalidrawCanvas）**  
+   - 内嵌 draw.io iframe，生成后的 XML 可直接渲染并继续可视化微调；  
+   - 也可将 JSON 元素映射成 Draw.io 组件。
+4. **辅助弹窗**  
+   - `ConfigManager`：多配置管理、在线测试、导入导出；  
+   - `AccessPasswordModal`：启用访问密码与验证；  
+   - `HistoryModal`、`ContactModal`、`OptimizationPanel` 等。
 
-1. 点击右上角的 **"配置 LLM"** 按钮
-2. 选择提供商类型（OpenAI 或 Anthropic）
-3. 填入你的 API Key
-4. 选择模型（**推荐使用 claude-sonnet-4.5**，效果最佳）
-5. 保存配置
+## 技术栈
 
-就这么简单！现在你可以开始创作了。
+- **前端框架**：Next.js 16 (App Router) + React 19
+- **画布**：Draw.io embed
+- **编辑器**：@monaco-editor/react
+- **样式**：Tailwind CSS v4 (实验版) + 自定义设计系统
+- **LLM 接入**：OpenAI / Anthropic 兼容接口，Server Actions + Edge API 路由
+- **状态持久化**：localStorage（配置、历史、访问密码开关）
 
-### 第二步：创建图表
+## 快速开始
 
-在输入框中用自然语言描述你的需求，例如：
-- "画一个用户登录的流程图"
-- "创建一个微服务架构图，包含网关、认证服务和业务服务"
-- "设计一个电商系统的数据库 ER 图"
+### 环境要求
 
-AI 会自动生成图表，你可以在画布上直接编辑和调整。
+- Node.js ≥ 18.18（Next.js 16 官方要求）
+- pnpm ≥ 8（推荐，其他包管理器需自行调整命令）
+- 可用的 OpenAI / Anthropic 兼容 API Key（或已启用访问密码的服务器端配置）
 
-## 💻 本地部署
-
-如果你想在本地运行项目：
+### 安装与启动
 
 ```bash
-# 克隆项目
-git clone <your-repo-url>
+# 克隆仓库
+git clone https://github.com/yunshenwuchuxun/smart-drawio-next.git
 cd smart-drawio-next
 
 # 安装依赖
@@ -89,92 +93,70 @@ pnpm install
 pnpm dev
 ```
 
-访问 http://localhost:3000 即可使用。
+访问 http://localhost:3000 即可体验。
 
-### 配置服务器端 LLM（可选）
+### 常用脚本
 
-如果你想为用户提供统一的 LLM 配置，避免他们自己申请 API Key，可以配置服务器端访问密码功能：
+| 命令        | 说明                                   |
+|-------------|----------------------------------------|
+| `pnpm dev`  | 启动开发环境（含 webpack overlay）      |
+| `pnpm build`| 生产构建                               |
+| `pnpm start`| 以生产模式启动（需先执行 `pnpm build`） |
+| `pnpm lint` | 运行 ESLint                            |
 
-1. 复制环境变量示例文件：
-```bash
-cp .env.example .env
-```
+## LLM 配置与访问密码
 
-2. 在 `.env` 中配置以下变量：
-```bash
-# 访问密码（用户需要输入此密码才能使用服务器端 LLM）
-ACCESS_PASSWORD=your-secure-password
+### 前端多配置管理（默认方式）
 
-# LLM 提供商类型（openai 或 anthropic）
-SERVER_LLM_TYPE=anthropic
+1. 打开右上角 **“配置 LLM”**。
+2. 选择提供商（OpenAI / Anthropic / 兼容中转）。
+3. 填写 `Base URL`、`API Key`、`Model` 等信息，可点击“测试连接”实时校验。
+4. 保存后即可在列表中切换、克隆、导出或导入配置，所有数据仅存于浏览器 localStorage。
 
-# API 基础 URL
-SERVER_LLM_BASE_URL=https://api.anthropic.com/v1
+### 服务端统一配置（访问密码模式，可选）
 
-# API 密钥
-SERVER_LLM_API_KEY=sk-ant-your-key-here
+若想让用户共享同一套 Key，可在服务器启用访问密码：
 
-# 模型名称
-SERVER_LLM_MODEL=claude-sonnet-4-5-20250929
-```
+1. 复制示例配置：`cp .env.example .env`。
+2. 在 `.env` 中填入以下变量：
 
-3. 重启开发服务器，用户即可通过访问密码使用服务器端配置的 LLM。
+| 变量名                | 作用说明                                                  |
+|-----------------------|-----------------------------------------------------------|
+| `ACCESS_PASSWORD`     | 用户需要输入的访问密码                                    |
+| `SERVER_LLM_TYPE`     | `openai` 或 `anthropic`                                   |
+| `SERVER_LLM_BASE_URL` | 兼容接口地址（如 `https://api.openai.com/v1`）           |
+| `SERVER_LLM_API_KEY`  | 后端持有的 Key，仅驻留服务器                              |
+| `SERVER_LLM_MODEL`    | 默认使用的模型名称                                        |
 
-**优势：**
-- 用户无需自己申请和配置 API Key
-- 统一管理 API 使用和成本
-- 适合团队或组织内部使用
-- 提供免费体验给用户
+3. 重启服务后，用户在前端点击“访问密码”输入密码并启用，即可让 `/api/generate` 自动读取服务端配置；启用后优先级高于本地配置。
 
-## ❓ 常见问题
+> ✅ 访问密码只会在服务器端验证，真实的 API Key 不会透传到浏览器。
 
-**Q: 推荐使用哪个 AI 模型？**
-A: 强烈推荐使用 **claude-sonnet-4.5**，它在理解需求和生成图表方面表现最佳。
+## 常见问题
 
-**Q: 数据安全吗？**
-A: 所有配置信息仅保存在你的浏览器本地，不会上传到任何服务器。
+- **API Key 会被上传吗？**  
+  不会。本地配置保存在浏览器 localStorage，只在调用 `/api/generate` 时随请求发送给自身服务端，再由服务端去请求外部 LLM。
 
-**Q: 支持哪些图表类型？**
-A: 支持流程图、架构图、时序图、ER 图、思维导图、网络拓扑图等 20+ 种类型，AI 会自动选择最合适的类型。
+- **生成被截断怎么办？**  
+  当响应过长时会自动提示“继续生成”按钮。点击后会携带上下文向 `/api/generate` 发送 `isContinuation=true`。
 
-**Q: 生成的图表可以修改吗？**
-A: 当然可以！生成后可以在 Draw.io 画布上自由编辑，包括调整位置、修改样式、添加元素等。
+- **图片识别失败？**  
+  请选择支持 Vision 的模型（如 GPT-4o、GPT-4.1、claude-3.5-sonnet 等），并确保图片小于 5 MB 且为常见格式。
 
-**Q: 什么是访问密码功能？**
-A: 访问密码功能允许服务器管理员配置统一的 LLM，用户只需输入密码即可使用，无需自己申请 API Key。启用访问密码后，将优先使用服务器端配置，忽略本地配置。
+- **历史记录占空间？**  
+  历史记录最多保留 20 条，可在“历史记录”弹窗中手动删除或一键清空。
 
-**Q: 访问密码和本地配置的优先级是什么？**
-A: 如果启用了访问密码，系统将优先使用服务器端的 LLM 配置。只有在未启用访问密码时，才会使用本地配置的 API Key。
+- **访问密码提示未配置？**  
+  需要同时设置 `ACCESS_PASSWORD` 与一整套 `SERVER_LLM_*` 变量，否则校验接口会返回 “服务器未配置访问密码”。
 
-## 🛠️ 技术栈
+## 贡献
 
-Next.js 16 · React 19 · Draw.io · Tailwind CSS 4 · Monaco Editor
+1. 项目在https://github.com/liujuntao123/smart-excalidraw-next项目上修改
+2. 十分感谢L站所有开公益站的佬友！
+3. 如果这个项目对你有帮助，欢迎通过以下方式支持：
+   - ⭐ 给项目点个 Star
+   - 💬 分享给更多需要的人
 
-## 📄 许可证
+## 许可证
 
-MIT License
-
-## 联系作者
-微信号： liujuntaoljt
-
-<img width="200"  alt="微信图片_20251103110224_44_85" src="https://github.com/user-attachments/assets/6d8c4da2-af27-4213-b929-0d47fa51e9b5" />
-
-## 💖 赞助
-
-感谢以下赞助者对本项目的支持：
-
-<!-- 赞助者名单 -->
-- API中转站：[AI 网关｜插件世界](https://ai-router.plugins-world.cn)
-
-如果这个项目对你有帮助，欢迎通过以下方式支持：
-- ⭐ 给项目点个 Star
-- 💬 分享给更多需要的人
-- 💰 成为赞助者（联系作者微信）
-
----
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=liujuntao123/smart-excalidraw-next&type=date&legend=top-left)](https://www.star-history.com/#liujuntao123/smart-excalidraw-next&type=date&legend=top-left)
-
-**用自然语言，绘制专业图表** - 让可视化创作回归简单
+MIT License – 可在保留版权声明的前提下自由使用、复制与分发。

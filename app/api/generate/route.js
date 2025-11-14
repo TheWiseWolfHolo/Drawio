@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { callLLM } from '@/lib/llm-client';
-import { SYSTEM_PROMPT, USER_PROMPT_TEMPLATE } from '@/lib/prompts';
+import { SYSTEM_PROMPT, USER_PROMPT_TEMPLATE, CONTINUATION_SYSTEM_PROMPT } from '@/lib/prompts';
 
 /**
  * POST /api/generate
@@ -8,7 +8,7 @@ import { SYSTEM_PROMPT, USER_PROMPT_TEMPLATE } from '@/lib/prompts';
  */
 export async function POST(request) {
   try {
-    const { config, userInput, chartType } = await request.json();
+    const { config, userInput, chartType, isContinuation } = await request.json();
     const accessPassword = request.headers.get('x-access-password');
 
     // Check if using server-side config with access password
@@ -108,10 +108,34 @@ export async function POST(request) {
       };
     }
 
+    // Choose system prompt based on continuation flag
+    const systemPrompt = isContinuation ? CONTINUATION_SYSTEM_PROMPT : SYSTEM_PROMPT;
+
+    // 调试：输出 system prompt 摘要
+    console.log('[DEBUG] System Prompt Info:', {
+      type: isContinuation ? 'CONTINUATION' : 'SYSTEM',
+      length: systemPrompt.length,
+      firstLine: systemPrompt.split('\n')[0],
+      hasMetaStructure: systemPrompt.includes('## 任务') || systemPrompt.includes('## Task')
+    });
+
     const fullMessages = [
-      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'system', content: systemPrompt },
       userMessage
     ];
+
+    // 调试：输出消息结构
+    console.log('[DEBUG] Messages Structure:', {
+      totalMessages: fullMessages.length,
+      systemRole: fullMessages[0].role,
+      systemContentLength: fullMessages[0].content.length,
+      systemContentPreview: fullMessages[0].content.substring(0, 150) + '...',
+      userRole: fullMessages[1].role,
+      userContentType: typeof fullMessages[1].content,
+      userContentPreview: typeof fullMessages[1].content === 'string'
+        ? fullMessages[1].content.substring(0, 100)
+        : '[Multimodal content]'
+    });
 
     // Create a readable stream for SSE
     const encoder = new TextEncoder();

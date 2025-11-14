@@ -13,7 +13,7 @@ import Notification from '@/components/Notification';
 import { getConfig, isConfigValid } from '@/lib/config';
 import { optimizeExcalidrawCode } from '@/lib/optimizeArrows';
 import { historyManager } from '@/lib/history-manager';
-import { OPTIMIZATION_SYSTEM_PROMPT, createOptimizationPrompt } from '@/lib/prompts';
+import { OPTIMIZATION_SYSTEM_PROMPT, createOptimizationPrompt, createContinuationPrompt } from '@/lib/prompts';
 
 // Dynamically import DrawioCanvas to avoid SSR issues
 const DrawioCanvas = dynamic(() => import('@/components/DrawioCanvas'), {
@@ -40,6 +40,8 @@ export default function Home() {
   const [currentInput, setCurrentInput] = useState('');
   const [currentChartType, setCurrentChartType] = useState('auto');
   const [usePassword, setUsePassword] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
+  const [canContinue, setCanContinue] = useState(false);
   const [notification, setNotification] = useState({
     isOpen: false,
     title: '',
@@ -295,6 +297,48 @@ export default function Home() {
 
       console.log('[DEBUG] tryParseAndApply - code preview:', cleanedCode.substring(0, 200));
 
+      // 多层级截断检测
+      const hasStart = cleanedCode.includes('<mxfile');
+      const hasDiagram = cleanedCode.includes('<diagram');
+      const hasModel = cleanedCode.includes('<mxGraphModel');
+      const hasRoot = cleanedCode.includes('<root');
+
+      const hasEndFile = cleanedCode.includes('</mxfile>');
+      const hasEndDiagram = cleanedCode.includes('</diagram>');
+      const hasEndModel = cleanedCode.includes('</mxGraphModel>');
+      const hasEndRoot = cleanedCode.includes('</root>');
+
+      // 检测任何层级的截断
+      const isTruncatedCheck = (
+        (hasStart && !hasEndFile) ||
+        (hasDiagram && !hasEndDiagram) ||
+        (hasModel && !hasEndModel) ||
+        (hasRoot && !hasEndRoot)
+      );
+
+      if (isTruncatedCheck) {
+        setIsTruncated(true);
+        setCanContinue(true);
+
+        // 生成详细的错误信息
+        const missingTags = [];
+        if (hasStart && !hasEndFile) missingTags.push('</mxfile>');
+        if (hasDiagram && !hasEndDiagram) missingTags.push('</diagram>');
+        if (hasModel && !hasEndModel) missingTags.push('</mxGraphModel>');
+        if (hasRoot && !hasEndRoot) missingTags.push('</root>');
+
+        setJsonError(`代码生成被截断，缺少闭合标签：${missingTags.join(', ')}。请点击"继续生成"按钮完成剩余部分。`);
+
+        // Still try to apply the incomplete XML for preview
+        setGeneratedXml(cleanedCode);
+        setElements([]);
+        return;
+      } else {
+        // Reset truncation state if complete
+        setIsTruncated(false);
+        setCanContinue(false);
+      }
+
       // Try to extract XML from anywhere in the code (more flexible)
       const xmlMatch = cleanedCode.match(/<mxfile[\s\S]*?<\/mxfile>/);
       if (xmlMatch) {
@@ -518,6 +562,168 @@ export default function Home() {
     }
   };
 
+  // Handle continuing truncated generation
+  const handleContinueGeneration = async () => {
+    if (!generatedCode.trim() || !isTruncated) {
+      return;
+    }
+
+    const usePassword = typeof window !== 'undefined' && localStorage.getItem('smart-excalidraw-use-password') === 'true';
+    const accessPassword = typeof window !== 'undefined' ? localStorage.getItem('smart-excalidraw-access-password') : '';
+
+    if (!usePassword && !isConfigValid(config)) {
+      setNotification({
+        isOpen: true,
+        title: '配置提醒',
+        message: '请先配置您的 LLM 提供商或启用访问密码',
+        type: 'warning'
+      });
+      setIsConfigManagerOpen(true);
+      return;
+    }
+
+    setIsGenerating(true);
+    setApiError(null);
+    setJsonError(null);
+    setCanContinue(false); // Disable continue button during generation
+
+    // Create new AbortController for this request
+    abortControllerRef.current = new AbortController();
+
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (usePassword && accessPassword) {
+        headers['x-access-password'] = accessPassword;
+      }
+
+      let finalConfig = usePassword ? null : config;
+
+      // Build continuation prompt
+      const continuationPrompt = createContinuationPrompt(generatedCode);
+
+      // Call generate API with continuation prompt and flag
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          config: finalConfig,
+          userInput: continuationPrompt,
+          chartType: 'auto',
+          isContinuation: true, // Flag to use CONTINUATION_SYSTEM_PROMPT
+        }),
+        signal: abortControllerRef.current.signal,
+      });
+
+      if (!response.ok) {
+        let errorMessage = '续写失败';
+        try {
+          const errorData = await response.json();
+          if (errorData.error) {
+            errorMessage = errorData.error;
+          }
+        } catch (e) {
+          errorMessage = `请求失败 (${response.status})`;
+        }
+        throw new Error(errorMessage);
+      }
+
+      // Process streaming response
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let accumulatedCode = '';
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.trim() === '' || line.trim() === 'data: [DONE]') continue;
+
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.content) {
+                accumulatedCode += data.content;
+
+                // 智能拼接：去除 LLM 可能重复的开始标签
+                let continuationCode = accumulatedCode.trim();
+
+                // 去除可能重复的 XML 声明和开始标签
+                continuationCode = continuationCode.replace(/^<\?xml[^>]*>\s*/i, '');
+                continuationCode = continuationCode.replace(/^<mxfile[^>]*>\s*/i, '');
+                continuationCode = continuationCode.replace(/^<diagram[^>]*>\s*/i, '');
+                continuationCode = continuationCode.replace(/^<mxGraphModel[^>]*>\s*/i, '');
+                continuationCode = continuationCode.replace(/^<root>\s*/i, '');
+
+                // 拼接：原代码 + 清理后的续写代码
+                const completeCode = generatedCode + '\n' + continuationCode;
+                const processedCode = postProcessDrawioCode(completeCode);
+                setGeneratedCode(processedCode);
+              } else if (data.error) {
+                throw new Error(data.error);
+              }
+            } catch (e) {
+              console.error('Error parsing SSE data:', e);
+            }
+          }
+        }
+      }
+
+      // Try to parse and apply the completed code
+      // 智能拼接：去除 LLM 可能重复的开始标签
+      let continuationCode = accumulatedCode.trim();
+
+      // 去除可能重复的 XML 声明和开始标签
+      continuationCode = continuationCode.replace(/^<\?xml[^>]*>\s*/i, '');
+      continuationCode = continuationCode.replace(/^<mxfile[^>]*>\s*/i, '');
+      continuationCode = continuationCode.replace(/^<diagram[^>]*>\s*/i, '');
+      continuationCode = continuationCode.replace(/^<mxGraphModel[^>]*>\s*/i, '');
+      continuationCode = continuationCode.replace(/^<root>\s*/i, '');
+
+      // 拼接：原代码 + 清理后的续写代码
+      const completeCode = generatedCode + '\n' + continuationCode;
+      const processedCode = postProcessDrawioCode(completeCode);
+      setGeneratedCode(processedCode);
+      tryParseAndApply(processedCode);
+
+      // Save to history
+      if (processedCode) {
+        historyManager.addHistory({
+          chartType: currentChartType,
+          userInput: currentInput + ' (续写)',
+          generatedCode: processedCode,
+          config: {
+            name: config?.name || config?.type || 'server',
+            model: config?.model || 'unknown'
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error continuing generation:', error);
+
+      // If user aborted, exit silently
+      if (error.name === 'AbortError') {
+        console.log('Continuation aborted by user');
+        return;
+      }
+
+      // Check if it's a network error
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        setApiError('网络连接失败，请检查网络连接');
+      } else {
+        setApiError(error.message);
+      }
+    } finally {
+      setIsGenerating(false);
+      abortControllerRef.current = null;
+    }
+  };
+
   // Handle config selection from manager
   const handleConfigSelect = (selectedConfig) => {
     if (selectedConfig) {
@@ -656,6 +862,9 @@ export default function Home() {
               isGenerating={isGenerating}
               isApplyingCode={isApplyingCode}
               isOptimizingCode={isOptimizingCode}
+              isTruncated={isTruncated}
+              canContinue={canContinue}
+              onContinue={handleContinueGeneration}
             />
           </div>
         </div>
