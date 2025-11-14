@@ -10,21 +10,10 @@
 
 ## 效果预览
 
-Transformer
-
-![4a57649c290de1d64c5d6a8cf966d6ef](F:\xwechat_files\wxid_oyngmns61x3e22_e12d\temp\RWTemp\2025-11\9e20f478899dc29eb19741386f9343c8\4a57649c290de1d64c5d6a8cf966d6ef.png)
-
-Swin-Transformer
-
-![88ba71b9a97ecee13420c46964325b1a](F:\xwechat_files\wxid_oyngmns61x3e22_e12d\temp\RWTemp\2025-11\9e20f478899dc29eb19741386f9343c8\88ba71b9a97ecee13420c46964325b1a.png)
-
-CLIP
-
-![adb1ea750dc5c6f29f7d1a11987a1e7d](F:\xwechat_files\wxid_oyngmns61x3e22_e12d\temp\RWTemp\2025-11\9e20f478899dc29eb19741386f9343c8\adb1ea750dc5c6f29f7d1a11987a1e7d.png)
-
-ProSST
-
-![a3b0bd585a95d9e5ff31146801b8f6cc](F:\xwechat_files\wxid_oyngmns61x3e22_e12d\temp\RWTemp\2025-11\a3b0bd585a95d9e5ff31146801b8f6cc.png)
+![Transformer](./public/images/transformer.png)
+![Swin-Transformer](./public/images/swin.png)
+![CLIP](./public/images/clip.png)
+![ProSST](./public/images/prosst.png)
 
 ## 项目简介
 
