@@ -33,7 +33,7 @@ export default function CodeEditor({
             <button
               onClick={onClear}
               disabled={isGenerating || isApplyingCode || isOptimizingCode}
-              className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded hover:bg-muted disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded hover:bg-muted disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 whitespace-nowrap"
             >
               清除
             </button>
@@ -41,7 +41,7 @@ export default function CodeEditor({
               <button
                 onClick={onContinue}
                 disabled={!canContinue || isGenerating}
-                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded hover:bg-primary-hover disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2"
+                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded hover:bg-primary-hover disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 whitespace-nowrap"
                 title="继续生成剩余代码"
               >
                 <span>{isGenerating ? '生成中...' : '继续生成'}</span>
@@ -64,7 +64,7 @@ export default function CodeEditor({
             <button
               onClick={onOptimize}
               disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-              className="px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/40 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+              className="px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/40 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm whitespace-nowrap"
               style={{ backgroundColor: 'var(--color-accent-soft)' }}
               title="优化图标布局和箭头连接"
             >
@@ -73,7 +73,7 @@ export default function CodeEditor({
             <button
               onClick={onAdvancedOptimize}
               disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-              className="px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/50 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+              className="px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/50 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm whitespace-nowrap"
               style={{ backgroundColor: 'var(--color-accent-strong)' }}
               title="高级优化选项"
             >
@@ -82,7 +82,7 @@ export default function CodeEditor({
             <button
               onClick={onApply}
               disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-              className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary-active rounded hover:bg-primary disabled:bg-muted disabled:text-muted-foreground transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm"
+              className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary-active rounded hover:bg-primary disabled:bg-muted disabled:text-muted-foreground transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm whitespace-nowrap"
             >
               <span>{isApplyingCode ? '应用中...' : '应用'}</span>
               {!isApplyingCode && (
