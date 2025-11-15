@@ -101,6 +101,8 @@
   --primary-foreground: #fff9f6;
   --ring: #d38a70;
   --white: #fefaf7;
+  --canvas: #f4ebe4;
+  --canvas-foreground: #2b1b16;
   --gray-50: #fdf8f6;
   --gray-100: #f8f1ed;
   --gray-200: #f0e2db;
@@ -135,6 +137,8 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-ring: var(--ring);
   --color-white: var(--white);
+  --color-canvas: var(--canvas);
+  --color-canvas-foreground: var(--canvas-foreground);
   --color-gray-50: var(--gray-50);
   --color-gray-100: var(--gray-100);
   --color-gray-200: var(--gray-200);

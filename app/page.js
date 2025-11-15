@@ -876,7 +876,10 @@ export default function Home() {
         />
 
         {/* Right Panel - Drawio Canvas */}
-        <div style={{ width: `${100 - leftPanelWidth}%`, height: '100%' }} className="bg-background">
+        <div
+          style={{ width: `${100 - leftPanelWidth}%`, height: '100%' }}
+          className="bg-canvas border-l border-border shadow-inner"
+        >
           <DrawioCanvas elements={elements} xml={generatedXml} />
         </div>
       </div>

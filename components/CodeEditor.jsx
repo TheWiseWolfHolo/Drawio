@@ -4,30 +4,30 @@ import { Editor } from '@monaco-editor/react';
 
 export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdvancedOptimize, onClear, jsonError, onClearJsonError, isGenerating, isApplyingCode, isOptimizingCode, isTruncated, canContinue, onContinue }) {
   return (
-    <div className="flex relative flex-col h-full bg-gray-50 border-t border-gray-200">
-      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200">
-        <h3 className="text-sm font-semibold text-gray-700">生成的代码</h3>
+    <div className="flex relative flex-col h-full bg-card border-t border-border">
+      <div className="flex items-center justify-between px-4 py-3 bg-card border-b border-border">
+        <h3 className="text-sm font-semibold text-foreground">生成的代码</h3>
         <div className="flex space-x-2">
           <button
             onClick={onClear}
             disabled={isGenerating || isApplyingCode || isOptimizingCode}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2"
+            className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded hover:bg-muted disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2"
           >
             清除
             {isGenerating && (
-              <div className="w-3 h-3 border border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-3 h-3 border border-muted-foreground border-t-transparent rounded-full animate-spin"></div>
             )}
           </button>
           {isTruncated && (
             <button
               onClick={onContinue}
               disabled={!canContinue || isGenerating}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded hover:bg-primary-hover disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2"
               title="继续生成剩余代码"
             >
               {isGenerating ? (
                 <>
-                  <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-3 h-3 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
                   <span>生成中...</span>
                 </>
               ) : (
@@ -50,15 +50,12 @@ export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdva
           <button
             onClick={onOptimize}
             disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-            className="px-4 py-2 text-sm font-medium text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2"
-            style={{
-              background: isGenerating || isApplyingCode || isOptimizingCode ? '#d1d5db' : 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)'
-            }}
+            className="px-4 py-2 text-sm font-medium rounded bg-accent text-accent-foreground hover:opacity-90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2 shadow-sm"
             title="优化图标布局和箭头连接"
           >
             {isOptimizingCode ? (
               <>
-                <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-3 h-3 border-2 border-accent-foreground border-t-transparent rounded-full animate-spin"></div>
                 <span>优化中...</span>
               </>
             ) : (
@@ -73,10 +70,7 @@ export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdva
           <button
             onClick={onAdvancedOptimize}
             disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-            className="px-4 py-2 text-sm font-medium text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2"
-            style={{
-              background: isGenerating || isApplyingCode || isOptimizingCode ? '#d1d5db' : 'linear-gradient(135deg, #f093fb 0%, #f093fb 100%)'
-            }}
+            className="px-4 py-2 text-sm font-medium rounded bg-primary text-primary-foreground hover:bg-primary-hover disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2 shadow-sm"
             title="高级优化选项"
           >
             <span>高级优化</span>
@@ -84,7 +78,7 @@ export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdva
           <button
             onClick={onApply}
             disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-            className="px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary-active rounded hover:bg-primary disabled:bg-muted disabled:text-muted-foreground transition-colors duration-200 flex items-center gap-2 shadow-sm"
           >
             {isApplyingCode ? (
               <>
