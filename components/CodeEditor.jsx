@@ -22,11 +22,10 @@ export default function CodeEditor({
 
   return (
     <div className="flex relative flex-col h-full bg-card border-t border-border">
-      <div className="flex items-center justify-between px-4 py-3 bg-card border-b border-border">
-        <h3 className="text-sm font-semibold text-foreground">生成的代码</h3>
+      <div className="flex flex-col items-center space-y-3 px-4 py-3 bg-card border-b border-border">
         <div className="relative inline-block">
           <div
-            className={`flex space-x-2 transition-opacity ${
+            className={`flex flex-wrap justify-center gap-2 transition-opacity ${
               isBusy ? 'opacity-50' : 'opacity-100'
             }`}
           >
@@ -104,6 +103,13 @@ export default function CodeEditor({
               处理中...
             </div>
           )}
+        </div>
+        <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+          <span className="h-px w-6 bg-border hidden sm:block" />
+          <span className="px-3 py-1 rounded-full bg-accent/40 text-accent-foreground font-medium tracking-wide">
+            生成的代码
+          </span>
+          <span className="h-px w-6 bg-border hidden sm:block" />
         </div>
       </div>
 
