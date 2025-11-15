@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-export default function DrawioCanvas({ elements, xml }) {
+export default function DrawioCanvas({ elements, xml, disablePointerEvents = false }) {
   const iframeRef = useRef(null);
   const [isReady, setIsReady] = useState(false);
 
@@ -124,6 +124,7 @@ export default function DrawioCanvas({ elements, xml }) {
         ref={iframeRef}
         src="https://embed.diagrams.net/?embed=1&proto=json&ui=min"
         className="w-full h-full border-0"
+        style={{ pointerEvents: disablePointerEvents ? 'none' : 'auto' }}
         allow="fullscreen"
       />
     </div>

@@ -50,6 +50,7 @@ export default function Home() {
   });
   const abortControllerRef = useRef(null);
   const layoutRef = useRef(null);
+  const layoutRef = useRef(null);
 
   // Load config on mount and listen for config changes
   useEffect(() => {
@@ -764,11 +765,18 @@ export default function Home() {
     if (isResizingHorizontal) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+    } else {
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
     }
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
     };
   }, [isResizingHorizontal]);
 
@@ -880,9 +888,18 @@ export default function Home() {
         {/* Right Panel - Drawio Canvas */}
         <div
           style={{ width: `${100 - leftPanelWidth}%`, height: '100%' }}
-          className="bg-canvas border-l border-border shadow-inner"
+          className={`relative bg-canvas border-l border-border shadow-inner ${
+            isResizingHorizontal ? 'select-none' : ''
+          }`}
         >
-          <DrawioCanvas elements={elements} xml={generatedXml} />
+          {isResizingHorizontal && (
+            <div className="absolute inset-0 z-10 cursor-col-resize" />
+          )}
+          <DrawioCanvas
+            elements={elements}
+            xml={generatedXml}
+            disablePointerEvents={isResizingHorizontal}
+          />
         </div>
       </div>
 
