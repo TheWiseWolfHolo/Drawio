@@ -11,7 +11,7 @@ export default function Select({
       value={value}
       onChange={onChange}
       disabled={disabled}
-      className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed ${className}`}
+      className={`w-full px-3 py-2 border border-input bg-card text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed ${className}`}
       {...props}
     >
       {options.map((option) => (

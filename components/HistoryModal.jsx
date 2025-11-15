@@ -64,12 +64,12 @@ export default function HistoryModal({ isOpen, onClose, onApply }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
-      <div className="relative bg-white rounded border border-gray-300 w-full max-w-4xl mx-4 max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">历史记录</h2>
+      <div className="relative bg-card text-foreground rounded border border-border w-full max-w-4xl mx-4 max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+          <h2 className="text-lg font-semibold font-heading text-foreground">历史记录</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            className="text-muted-foreground hover:text-foreground transition-colors duration-200"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -91,30 +91,30 @@ export default function HistoryModal({ isOpen, onClose, onApply }) {
 
           <div className="space-y-3">
             {histories.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 暂无历史记录
               </div>
             ) : (
               histories.map((history) => (
                 <div
                   key={history.id}
-                  className="border border-gray-200 rounded-lg p-4 hover:border-gray-300"
+                  className="border border-border rounded-lg p-4 hover:border-primary/60 transition-colors"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">
+                        <span className="px-2 py-1 text-xs bg-accent text-accent-foreground rounded">
                           {CHART_TYPES[history.chartType] || history.chartType}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-muted-foreground">
                           {new Date(history.timestamp).toLocaleString()}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-900 mb-2">
+                      <p className="text-sm text-foreground mb-2">
                         {truncateText(history.userInput)}
                       </p>
                       {history.config && (
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-muted-foreground">
                           模型: {history.config.name} - {history.config.model}
                         </div>
                       )}
@@ -122,7 +122,7 @@ export default function HistoryModal({ isOpen, onClose, onApply }) {
                     <div className="flex items-center gap-2 ml-4">
                       <button
                         onClick={() => handleApply(history)}
-                        className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200"
+                        className="px-3 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary-hover transition-colors duration-200"
                       >
                         应用
                       </button>

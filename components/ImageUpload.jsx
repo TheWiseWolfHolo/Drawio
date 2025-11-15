@@ -135,7 +135,7 @@ export default function ImageUpload({ onImageSelect, isGenerating, chartType, on
           id="chart-type-image"
           value={chartType}
           onChange={(e) => onChartTypeChange?.(e.target.value)}
-          className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
+          className="w-full px-3 py-2 text-sm border border-input bg-card text-foreground rounded focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-muted disabled:text-muted-foreground"
           disabled={isGenerating || uploadStatus === 'uploading'}
         >
           {Object.entries(CHART_TYPES).map(([key, label]) => (
@@ -151,17 +151,17 @@ export default function ImageUpload({ onImageSelect, isGenerating, chartType, on
         <div
           className={`flex-1 flex flex-col items-center justify-center border-2 border-dashed rounded-lg transition-colors duration-200 ${
             isDragging
-              ? 'border-blue-500 bg-blue-50'
-              : 'border-gray-300 hover:border-gray-400'
-          }`}
+              ? 'border-primary bg-accent/60'
+              : 'border-border hover:border-primary'
+          } bg-card`}
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
-          <div className="text-center mb-4">
+          <div className="text-center mb-4 text-foreground">
             <svg
-              className="mx-auto h-12 w-12 text-gray-400 mb-3"
+              className="mx-auto h-12 w-12 text-muted-foreground mb-3"
               stroke="currentColor"
               fill="none"
               viewBox="0 0 48 48"
@@ -173,8 +173,8 @@ export default function ImageUpload({ onImageSelect, isGenerating, chartType, on
                 strokeLinejoin="round"
               />
             </svg>
-            <p className="text-sm text-gray-600 mb-1">上传图片进行识别</p>
-            <p className="text-xs text-gray-400">
+            <p className="text-sm text-foreground mb-1">上传图片进行识别</p>
+            <p className="text-xs text-muted-foreground">
               支持 JPG、PNG、WebP、GIF 格式，最大 5MB
             </p>
           </div>
@@ -191,16 +191,16 @@ export default function ImageUpload({ onImageSelect, isGenerating, chartType, on
           <button
             onClick={handleUploadClick}
             disabled={isGenerating || uploadStatus === 'uploading'}
-            className="px-6 py-2 bg-gray-900 text-white text-sm rounded hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center space-x-2"
+            className="px-6 py-2 bg-primary text-primary-foreground text-sm rounded hover:bg-primary-hover disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center space-x-2"
           >
             {uploadStatus === 'uploading' ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
                 <span>处理中...</span>
               </>
             ) : isGenerating ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
                 <span>生成中...</span>
               </>
             ) : (
@@ -219,13 +219,13 @@ export default function ImageUpload({ onImageSelect, isGenerating, chartType, on
           </button>
 
           {isDragging && (
-            <p className="mt-3 text-sm text-blue-600">松开鼠标上传图片</p>
+            <p className="mt-3 text-sm text-primary">松开鼠标上传图片</p>
           )}
         </div>
       ) : (
         // 图片预览区域
         <div className="flex-1 flex flex-col">
-          <div className="flex-1 flex justify-center relative bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
+          <div className="flex-1 flex justify-center relative bg-card rounded-lg overflow-hidden border border-border">
             {imagePreview && (
               <img
                 src={imagePreview}
@@ -238,10 +238,10 @@ export default function ImageUpload({ onImageSelect, isGenerating, chartType, on
             <button
               onClick={handleClearImage}
               disabled={isGenerating || uploadStatus === 'uploading'}
-              className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+              className="absolute top-3 right-3 p-2 bg-card rounded-full shadow-md hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               title="删除图片"
             >
-              <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -249,8 +249,8 @@ export default function ImageUpload({ onImageSelect, isGenerating, chartType, on
             {/* 成功状态指示器 */}
             {uploadStatus === 'success' && (
               <div className="absolute top-3 left-3">
-                <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                  <svg className="w-4 h-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -259,8 +259,8 @@ export default function ImageUpload({ onImageSelect, isGenerating, chartType, on
 
             {/* 状态指示器 */}
             {uploadStatus === 'uploading' && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white/75">
-                <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <div className="absolute inset-0 flex items-center justify-center bg-card/80">
+                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
               </div>
             )}
 
@@ -298,7 +298,7 @@ export default function ImageUpload({ onImageSelect, isGenerating, chartType, on
               ) : (
                 <button
                   onClick={onImageGenerate}
-                  className="w-full px-4 py-3 bg-gray-900 text-white rounded hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center space-x-2"
+                  className="w-full px-4 py-3 bg-primary text-primary-foreground rounded hover:bg-primary-hover disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />

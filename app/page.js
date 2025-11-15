@@ -771,12 +771,12 @@ export default function Home() {
   }, [isResizingHorizontal]);
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-background">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
+      <header className="flex items-center justify-between px-6 py-4 bg-card border-b border-border">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900">Smart Drawio</h1>
-          <p className="text-xs text-gray-500">AI 驱动的图表生成</p>
+          <h1 className="text-lg font-semibold font-heading text-foreground">Drawio</h1>
+          <p className="text-xs text-muted-foreground">AI 驱动的图表生成</p>
         </div>
         <div className="flex items-center space-x-3">
           {(usePassword || (config && isConfigValid(config))) && (
@@ -790,19 +790,19 @@ export default function Home() {
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setIsHistoryModalOpen(true)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors duration-200"
+              className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded hover:bg-muted transition-colors duration-200"
             >
               历史记录
             </button>
             <button
               onClick={() => setIsAccessPasswordModalOpen(true)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors duration-200"
+              className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded hover:bg-muted transition-colors duration-200"
             >
               访问密码
             </button>
             <button
               onClick={() => setIsConfigManagerOpen(true)}
-              className="px-4 py-2 text-sm font-medium text-white bg-gray-900 border border-gray-900 rounded hover:bg-gray-800 transition-colors duration-200"
+              className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary border border-primary rounded hover:bg-primary-hover transition-colors duration-200"
             >
               管理配置
             </button>
@@ -813,7 +813,7 @@ export default function Home() {
       {/* Main Content - Two Column Layout */}
       <div className="flex flex-1 overflow-hidden pb-1">
         {/* Left Panel - Chat and Code Editor */}
-        <div id="left-panel" style={{ width: `${leftPanelWidth}%` }} className="flex flex-col border-r border-gray-200 bg-white">
+        <div id="left-panel" style={{ width: `${leftPanelWidth}%` }} className="flex flex-col border-r border-border bg-card">
           {/* API Error Banner */}
           {apiError && (
             <div className="bg-red-50 border-b border-red-200 px-4 py-3 flex items-start justify-between">
@@ -872,11 +872,11 @@ export default function Home() {
         {/* Horizontal Resizer */}
         <div
           onMouseDown={handleHorizontalMouseDown}
-          className="w-1 bg-gray-200 hover:bg-gray-400 cursor-col-resize transition-colors duration-200 flex-shrink-0"
+          className="w-1 bg-border hover:bg-primary/60 cursor-col-resize transition-colors duration-200 flex-shrink-0"
         />
 
         {/* Right Panel - Drawio Canvas */}
-        <div style={{ width: `${100 - leftPanelWidth}%`, height: '100%' }} className="bg-gray-50">
+        <div style={{ width: `${100 - leftPanelWidth}%`, height: '100%' }} className="bg-background">
           <DrawioCanvas elements={elements} xml={generatedXml} />
         </div>
       </div>
@@ -889,11 +889,9 @@ export default function Home() {
       />
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 px-6 py-3">
-        <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
-          <span>Smart Drawio v0.1.0</span>
-          <span className="text-gray-400">|</span>
-          <span>AI 驱动的智能科研图表生成工具</span>
+      <footer className="bg-card border-t border-border px-6 py-3">
+        <div className="flex items-center justify-center text-sm text-muted-foreground">
+          <span>Drawio  |  Powered by WolfHolo</span>
         </div>
       </footer>
 

@@ -1,21 +1,159 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Tiempos";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/tiempos/TIEMPOSTEXT-REGULAR-WEBFONT-FVBKCKML.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "Tiempos";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/tiempos/TIEMPOSTEXT-REGULARITALIC-WEBFONT-DRLEWHES.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "Tiempos";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/tiempos/TIEMPOSTEXT-SEMIBOLD-WEBFONT-CKUQAWUP.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "Tiempos";
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/tiempos/TIEMPOSTEXT-SEMIBOLDITALIC-WEBFONT-CTU2XEIM.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "PingFang SC";
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url("/fonts/pingfang/PingFangSC-Ultralight.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "PingFang SC";
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+  src: url("/fonts/pingfang/PingFangSC-Thin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "PingFang SC";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("/fonts/pingfang/PingFangSC-Light.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "PingFang SC";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/pingfang/PingFangSC-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "PingFang SC";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/pingfang/PingFangSC-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "PingFang SC";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/pingfang/PingFangSC-Semibold.woff2") format("woff2");
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f4f2;
+  --foreground: #2f1f18;
+  --card: #fcf8f6;
+  --card-foreground: #2f1f18;
+  --muted: #efe3dd;
+  --muted-foreground: #6f5247;
+  --border: #e0d2cc;
+  --input: #d7c7c0;
+  --accent: #e6cfc5;
+  --accent-foreground: #55382f;
+  --primary: #c96442;
+  --primary-hover: #b55839;
+  --primary-active: #9c4b34;
+  --primary-foreground: #fff9f6;
+  --ring: #d38a70;
+  --white: #fefaf7;
+  --gray-50: #fdf8f6;
+  --gray-100: #f8f1ed;
+  --gray-200: #f0e2db;
+  --gray-300: #e2cfc3;
+  --gray-400: #d1b6a8;
+  --gray-500: #b9907f;
+  --gray-600: #a06f5b;
+  --gray-700: #805340;
+  --gray-800: #583528;
+  --gray-900: #2f1f18;
+  --font-body: "PingFang SC", "Tiempos", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Tiempos", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  --font-mono-stack: "SFMono-Regular", Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+  --color-white: var(--white);
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-700: var(--gray-700);
+  --color-gray-800: var(--gray-800);
+  --color-gray-900: var(--gray-900);
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-mono-stack);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
 }
 
 /* Hide scrollbar utility class */

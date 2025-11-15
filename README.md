@@ -1,12 +1,12 @@
-# Smart Drawio Next
+# Drawio
 
-> 用自然语言或参考图片，几秒钟生成==可编辑的专业科研== Draw.io 图表。
+> **Drawio  |  Powered by WolfHolo**  
+> 用自然语言或参考图片，几秒钟生成可编辑的专业科研 Draw.io 图表。
 
-## 在线网站
+## 在线体验
 
-进入在线网站直接使用：https://smart-drawio-next.vercel.app/
-
-(需要自己有API-Key)
+- 推荐自建 Vercel / 自托管实例并配置自己的 API Key；  
+- 若需要参考原始 Demo，可访问 upstream 部署（若仍在线）：https://smart-drawio-next.vercel.app/
 
 ## 效果预览
 
@@ -17,63 +17,66 @@
 
 ## 项目简介
 
-[smart-drawio-next](https://github.com/yunshenwuchuxun/smart-drawio-next) 将 Next.js 16、Draw.io embed 以及流式大模型调用组合在一起，让你可以：
+Drawio 是基于 [smart-drawio-next](https://github.com/yunshenwuchuxun/smart-drawio-next) 的二次开发版本，由 WolfHolo 团队重新打磨品牌与视觉：
 
-- 使用自然语言描述或上传截图，自动生成结构化图表；
-- 在 Monaco Editor 中微调生成的 JSON / XML 代码；
-- 将结果一键同步到内嵌的 draw.io 画布进行可视化调整；
-- 通过高级优化面板让 AI 继续清理布局、统一样式或添加注释。
+- **AI 驱动的图表生成**：通过文本或图片提示，自动生成 Draw.io XML / JSON；
+- **所见即所得**：Monaco 编辑器与 Draw.io iframe 联动，实时同步编辑与预览；
+- **完整配套能力**：多模型配置、访问密码、历史记录、通知、智能优化面板一应俱全；
+- **更统一的品牌体验**：暖色低饱和主题、定制英中字体和新的页脚/文案体系。
 
-项目已经内置了多模型配置、访问密码、历史记录、通知系统等配套功能，可以直接部署为个人效率工具或团队内部服务。
+## 主题与设计
+
+- **主色**：`#c96442`（primary）、`#b55839`（hover）、`#9c4b34`（active）；  
+- **背景**：`#f8f4f2`，搭配 `#fcf8f6` 的卡片与 `#e0d2cc` 的边框，营造温暖且不刺眼的层次；  
+- **辅色**：`#e6cfc5` muted / accent、`#6f5247` muted-foreground；  
+- **字体**：  
+  - 标题/英文：自托管 **Tiempos**；  
+  - 中文正文：自托管 **PingFang SC**；  
+  Tailwind `font-sans` / `font-heading` / `font-mono` 已统一指向上述字体栈。
 
 ## 功能亮点
 
-- **LLM 原生绘图体验**：流式显示生成进度，支持“继续生成”拆分长内容；可手动指定 20+ 图表类型或让模型自动选择（`lib/constants.js`）。
-- **多模态输入**：拖拽 PNG/JPG/WebP/GIF（≤5 MB）或使用文件选择，配合 Vision 模型将已有图纸转成可编辑信息（`components/ImageUpload`）。
-- **双画布联动**：Monaco 编辑器负责查看/修改原始代码，draw.io iframe 负责渲染与微调；支持随时重新应用代码（`components/CodeEditor` + `components/DrawioCanvas`）。
-- **智能优化链路**：一键修复箭头锚点、线条宽度等常见问题（`lib/optimizeArrows`），或通过高级优化面板勾选/自定义需求交给 AI 再处理（`components/OptimizationPanel`）。
-- **配置管理器**：UI 里即可创建、复制、导入/导出任意数量的 OpenAI/Anthropic 兼容配置，支持在线测试模型列表（`components/ConfigManager`）。
-- **历史记录 & 通知**：最近 20 条生成记录保存在浏览器 localStorage，可随时回放（`lib/history-manager`）；通知、确认弹窗等提升整体 UX。
+- **LLM 原生绘图体验**：流式生成、继续生成、20+ 图表类型（`lib/constants.js`）。  
+- **多模态输入**：拖拽 PNG/JPG/WebP/GIF（≤5 MB）或文件选择，结合 Vision 模型将截图转为可编辑连线（`components/ImageUpload`）。  
+- **双画布联动**：Monaco 编辑器负责 JSON/XML，Draw.io iframe 负责渲染与微调（`components/CodeEditor` + `components/DrawioCanvas`）。  
+- **智能优化链路**：可一键修复箭头、样式，也可通过高级面板勾选/自定义优化建议（`components/OptimizationPanel`）。  
+- **配置管理器**：UI 中管理 OpenAI/Anthropic 兼容配置，支持导入导出、在线测试（`components/ConfigManager`）。  
+- **历史记录 & 通知**：最近 20 条记录保存在 localStorage，并有统一的通知/确认弹窗。
 
 ## 界面与模块
 
 1. **交互区（Chat + ImageUpload）**  
-   - 选择图表类型、输入自然语言或上传参考图片；  
-   - 支持中途停止、继续生成、查看 API 错误提示。
+   - 输入需求、上传参考图、选择图表类型，支持停止与继续生成。  
 2. **生成代码区（CodeEditor）**  
-   - Monaco Editor 展示 JSON / XML，提供清空、优化、高级优化、应用等动作；  
-   - JSON 解析失败会即时提示错误来源。
+   - Monaco 展示 JSON / XML，提供清空、优化、高级优化、应用、复制等操作，并对解析错误即时提示。  
 3. **画布区（DrawioCanvas / ExcalidrawCanvas）**  
-   - 内嵌 draw.io iframe，生成后的 XML 可直接渲染并继续可视化微调；  
-   - 也可将 JSON 元素映射成 Draw.io 组件。
+   - 内嵌 draw.io，随时把代码同步到画布继续拖拽调整。  
 4. **辅助弹窗**  
-   - `ConfigManager`：多配置管理、在线测试、导入导出；  
-   - `AccessPasswordModal`：启用访问密码与验证；  
-   - `HistoryModal`、`ContactModal`、`OptimizationPanel` 等。
+   - `ConfigManager`、`AccessPasswordModal`、`HistoryModal`、`OptimizationPanel`、`ContactModal` 等组成完备的使用流程。
 
 ## 技术栈
 
-- **前端框架**：Next.js 16 (App Router) + React 19
-- **画布**：Draw.io embed
-- **编辑器**：@monaco-editor/react
-- **样式**：Tailwind CSS v4 (实验版) + 自定义设计系统
-- **LLM 接入**：OpenAI / Anthropic 兼容接口，Server Actions + Edge API 路由
-- **状态持久化**：localStorage（配置、历史、访问密码开关）
+- **前端框架**：Next.js 16 (App Router) + React 19  
+- **画布**：Draw.io embed（iframe）  
+- **编辑器**：@monaco-editor/react  
+- **样式**：Tailwind CSS v4 + 自定义设计系统 + 自托管字体  
+- **LLM 接入**：OpenAI / Anthropic 兼容接口，Edge API 路由 + Server Actions  
+- **状态**：localStorage（配置、历史、访问密码开关）
 
 ## 快速开始
 
 ### 环境要求
 
-- Node.js ≥ 18.18（Next.js 16 官方要求）
-- pnpm ≥ 8（推荐，其他包管理器需自行调整命令）
-- 可用的 OpenAI / Anthropic 兼容 API Key（或已启用访问密码的服务器端配置）
+- Node.js ≥ 18.18  
+- pnpm ≥ 8（推荐）  
+- 拥有可用的 OpenAI / Anthropic 兼容 API Key，或启用访问密码的服务端配置
 
 ### 安装与启动
 
 ```bash
-# 克隆仓库
-git clone https://github.com/yunshenwuchuxun/smart-drawio-next.git
-cd smart-drawio-next
+# 克隆你的 Drawio 仓库
+git clone https://github.com/<your-org>/drawio.git
+cd drawio
 
 # 安装依赖
 pnpm install
@@ -82,7 +85,7 @@ pnpm install
 pnpm dev
 ```
 
-访问 http://localhost:3000 即可体验。
+访问 http://localhost:3000 体验本地环境，并按需配置 `ACCESS_PASSWORD` / LLM Key。
 
 ### 常用脚本
 
@@ -90,62 +93,53 @@ pnpm dev
 |-------------|----------------------------------------|
 | `pnpm dev`  | 启动开发环境（含 webpack overlay）      |
 | `pnpm build`| 生产构建                               |
-| `pnpm start`| 以生产模式启动（需先执行 `pnpm build`） |
+| `pnpm start`| 生产模式启动（需先 `pnpm build`）       |
 | `pnpm lint` | 运行 ESLint                            |
 
 ## LLM 配置与访问密码
 
-### 前端多配置管理（默认方式）
+### 前端多配置管理（默认）
 
-1. 打开右上角 **“配置 LLM”**。
-2. 选择提供商（OpenAI / Anthropic / 兼容中转）。
-3. 填写 `Base URL`、`API Key`、`Model` 等信息，可点击“测试连接”实时校验。
-4. 保存后即可在列表中切换、克隆、导出或导入配置，所有数据仅存于浏览器 localStorage。
+1. 点击右上角 **“管理配置”** 打开 `ConfigManager`。  
+2. 选择提供商（OpenAI / Anthropic / 中转兼容），填写 `Base URL`、`API Key`、`Model`。  
+3. 可一键复制、导入/导出配置，所有数据仅存于浏览器 localStorage。  
+4. “历史记录”可快速复用最近 20 次生成结果。
 
-### 服务端统一配置（访问密码模式，可选）
+### 服务端统一配置（访问密码，可选）
 
-若想让用户共享同一套 Key，可在服务器启用访问密码：
+若希望所有用户复用同一套 Key，可在服务器配置 `.env`：
 
-1. 复制示例配置：`cp .env.example .env`。
-2. 在 `.env` 中填入以下变量：
+| 变量名                | 说明                                    |
+|-----------------------|-----------------------------------------|
+| `ACCESS_PASSWORD`     | 前端需要输入的访问密码                  |
+| `SERVER_LLM_TYPE`     | `openai` 或 `anthropic`                 |
+| `SERVER_LLM_BASE_URL` | 兼容接口地址（如 `https://api.openai.com/v1`） |
+| `SERVER_LLM_API_KEY`  | 服务端保存的 Key，不会传到浏览器        |
+| `SERVER_LLM_MODEL`    | 默认使用的模型名称                      |
 
-| 变量名                | 作用说明                                                  |
-|-----------------------|-----------------------------------------------------------|
-| `ACCESS_PASSWORD`     | 用户需要输入的访问密码                                    |
-| `SERVER_LLM_TYPE`     | `openai` 或 `anthropic`                                   |
-| `SERVER_LLM_BASE_URL` | 兼容接口地址（如 `https://api.openai.com/v1`）           |
-| `SERVER_LLM_API_KEY`  | 后端持有的 Key，仅驻留服务器                              |
-| `SERVER_LLM_MODEL`    | 默认使用的模型名称                                        |
+启用后，前端“访问密码”弹窗会优先生效服务器配置；若未配置完整变量，接口会提示“服务器未配置访问密码”。
 
-3. 重启服务后，用户在前端点击“访问密码”输入密码并启用，即可让 `/api/generate` 自动读取服务端配置；启用后优先级高于本地配置。
-
-> ✅ 访问密码只会在服务器端验证，真实的 API Key 不会透传到浏览器。
+> ✅ 访问密码只在服务端校验，真实 API Key 不会暴露给客户端。
 
 ## 常见问题
 
-- **API Key 会被上传吗？**  
-  不会。本地配置保存在浏览器 localStorage，只在调用 `/api/generate` 时随请求发送给自身服务端，再由服务端去请求外部 LLM。
+- **API Key 会泄露吗？**  
+  不会。Key 仅保存在浏览器 localStorage，发起请求时只会发送到你自己的后端，再由后端请求第三方 LLM。  
+- **响应被截断怎么办？**  
+  会自动提示“继续生成”按钮，并在 `handleContinueGeneration` 中携带上下文继续。  
+- **图片解析失败？**  
+  请确保使用 Vision 能力模型（GPT-4o、GPT-4.1、Claude 3.5 Sonnet 等），并保证图片 ≤5 MB。  
+- **历史记录很多？**  
+  “历史记录”弹窗可单条删除或一键清空，最多保留 20 条。  
+- **仍想参考原项目？**  
+  Drawio 基于 [smart-drawio-next](https://github.com/yunshenwuchuxun/smart-drawio-next) 与 [smart-excalidraw-next](https://github.com/liujuntao123/smart-excalidraw-next) 深度定制，欢迎查看 upstream。
 
-- **生成被截断怎么办？**  
-  当响应过长时会自动提示“继续生成”按钮。点击后会携带上下文向 `/api/generate` 发送 `isContinuation=true`。
+## 贡献与致谢
 
-- **图片识别失败？**  
-  请选择支持 Vision 的模型（如 GPT-4o、GPT-4.1、claude-3.5-sonnet 等），并确保图片小于 5 MB 且为常见格式。
-
-- **历史记录占空间？**  
-  历史记录最多保留 20 条，可在“历史记录”弹窗中手动删除或一键清空。
-
-- **访问密码提示未配置？**  
-  需要同时设置 `ACCESS_PASSWORD` 与一整套 `SERVER_LLM_*` 变量，否则校验接口会返回 “服务器未配置访问密码”。
-
-## 贡献
-
-1. 项目在此项目上修改：https://github.com/liujuntao123/smart-excalidraw-next
-2. 十分感谢L站所有开公益站的佬友！
-3. 如果这个项目对你有帮助，欢迎通过以下方式支持：
-   - ⭐ 给项目点个 Star
-   - 💬 分享给更多需要的人
+- 感谢 upstream 项目及开源社区；WolfHolo 版本主要聚焦于品牌、视觉与自托管体验。  
+- 欢迎提交 Issue / PR，共同让 Drawio 更好用。  
+- 觉得有帮助？⭐ Star、分享给同事或科研伙伴就是最好的支持。
 
 ## 许可证
 
-MIT License – 可在保留版权声明的前提下自由使用、复制与分发。
+MIT License —— 在保留版权声明的前提下可自由使用、复制与分发。

@@ -9,9 +9,9 @@ export default function Spinner({ size = 'md', color = 'white' }) {
   };
 
   const colorClasses = {
-    white: 'border-white border-t-transparent',
-    gray: 'border-gray-700 border-t-transparent',
-    primary: 'border-gray-900 border-t-transparent',
+    white: 'border-primary-foreground border-t-transparent',
+    gray: 'border-muted-foreground border-t-transparent',
+    primary: 'border-primary border-t-transparent',
   };
 
   return (
