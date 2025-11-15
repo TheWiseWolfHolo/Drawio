@@ -49,6 +49,7 @@ export default function Home() {
     type: 'info'
   });
   const abortControllerRef = useRef(null);
+  const layoutRef = useRef(null);
 
   // Load config on mount and listen for config changes
   useEffect(() => {
@@ -747,11 +748,12 @@ export default function Home() {
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (!isResizingHorizontal) return;
-      
-      const percentage = (e.clientX / window.innerWidth) * 100;
-      
-      // 可调节的范围
+      if (!isResizingHorizontal || !layoutRef.current) return;
+
+      const rect = layoutRef.current.getBoundingClientRect();
+      const relativeX = e.clientX - rect.left;
+      const percentage = (relativeX / rect.width) * 100;
+
       setLeftPanelWidth(Math.min(Math.max(percentage, 20), 80));
     };
 
@@ -811,7 +813,7 @@ export default function Home() {
       </header>
 
       {/* Main Content - Two Column Layout */}
-      <div className="flex flex-1 overflow-hidden pb-1">
+      <div ref={layoutRef} className="flex flex-1 overflow-hidden pb-1">
         {/* Left Panel - Chat and Code Editor */}
         <div id="left-panel" style={{ width: `${leftPanelWidth}%` }} className="flex flex-col border-r border-border bg-card">
           {/* API Error Banner */}
