@@ -1,16 +1,6 @@
 'use client';
 
 import { Editor } from '@monaco-editor/react';
-import Spinner from './ui/Spinner';
-
-const LoadingIndicator = ({ visible, color = 'primary' }) => {
-  if (!visible) return null;
-  return (
-    <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-      <Spinner size="sm" color={color} />
-    </span>
-  );
-};
 
 export default function CodeEditor({
   code,
@@ -28,91 +18,92 @@ export default function CodeEditor({
   canContinue,
   onContinue,
 }) {
+  const isBusy = isGenerating || isApplyingCode || isOptimizingCode;
+
   return (
     <div className="flex relative flex-col h-full bg-card border-t border-border">
       <div className="flex items-center justify-between px-4 py-3 bg-card border-b border-border">
         <h3 className="text-sm font-semibold text-foreground">生成的代码</h3>
-        <div className="flex space-x-2">
-          <button
-            onClick={onClear}
-            disabled={isGenerating || isApplyingCode || isOptimizingCode}
-            className={`relative px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded hover:bg-muted disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 ${
-              isGenerating ? 'pr-9' : ''
+        <div className="relative inline-block">
+          <div
+            className={`flex space-x-2 transition-opacity ${
+              isBusy ? 'opacity-50' : 'opacity-100'
             }`}
           >
-            清除
-            <LoadingIndicator visible={isGenerating} color="primary" />
-          </button>
-          {isTruncated && (
             <button
-              onClick={onContinue}
-              disabled={!canContinue || isGenerating}
-              className={`relative px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded hover:bg-primary-hover disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2 ${
-                isGenerating ? 'pr-9' : ''
-              }`}
-              title="继续生成剩余代码"
+              onClick={onClear}
+              disabled={isGenerating || isApplyingCode || isOptimizingCode}
+              className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded hover:bg-muted disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2"
             >
-              <span>继续生成</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z"
-                />
-              </svg>
-              <LoadingIndicator visible={isGenerating} color="white" />
+              清除
             </button>
-          )}
-          <button
-            onClick={onOptimize}
-            disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-            className={`relative px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/40 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm ${
-              isOptimizingCode ? 'pr-9' : ''
-            }`}
-            style={{ backgroundColor: 'var(--color-accent-soft)' }}
-            title="优化图标布局和箭头连接"
-          >
-            <span>{isOptimizingCode ? '优化中...' : '优化'}</span>
-            <LoadingIndicator visible={isOptimizingCode} color="primary" />
-          </button>
-          <button
-            onClick={onAdvancedOptimize}
-            disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-            className="px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/50 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
-            style={{ backgroundColor: 'var(--color-accent-strong)' }}
-            title="高级优化选项"
-          >
-            <span>高级优化</span>
-          </button>
-          <button
-            onClick={onApply}
-            disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-            className={`relative px-4 py-2 text-sm font-medium text-primary-foreground bg-primary-active rounded hover:bg-primary disabled:bg-muted disabled:text-muted-foreground transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm ${
-              isApplyingCode ? 'pr-9' : ''
-            }`}
-          >
-            <span>{isApplyingCode ? '应用中...' : '应用'}</span>
-            {!isApplyingCode && (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-4 h-4"
+            {isTruncated && (
+              <button
+                onClick={onContinue}
+                disabled={!canContinue || isGenerating}
+                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded hover:bg-primary-hover disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2"
+                title="继续生成剩余代码"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
+                <span>{isGenerating ? '生成中...' : '继续生成'}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z"
+                  />
+                </svg>
+              </button>
             )}
-            <LoadingIndicator visible={isApplyingCode} color="white" />
-          </button>
+            <button
+              onClick={onOptimize}
+              disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
+              className="px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/40 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+              style={{ backgroundColor: 'var(--color-accent-soft)' }}
+              title="优化图标布局和箭头连接"
+            >
+              <span>{isOptimizingCode ? '优化中...' : '优化'}</span>
+            </button>
+            <button
+              onClick={onAdvancedOptimize}
+              disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
+              className="px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/50 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+              style={{ backgroundColor: 'var(--color-accent-strong)' }}
+              title="高级优化选项"
+            >
+              <span>高级优化</span>
+            </button>
+            <button
+              onClick={onApply}
+              disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
+              className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary-active rounded hover:bg-primary disabled:bg-muted disabled:text-muted-foreground transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm"
+            >
+              <span>{isApplyingCode ? '应用中...' : '应用'}</span>
+              {!isApplyingCode && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              )}
+            </button>
+          </div>
+          {isBusy && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg border border-border bg-card/80 backdrop-blur-[2px] text-xs text-muted-foreground cursor-not-allowed">
+              处理中...
+            </div>
+          )}
         </div>
       </div>
 
