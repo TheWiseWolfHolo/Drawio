@@ -6,18 +6,10 @@
 ## 在线体验
 
 - 推荐自建 Vercel / 自托管实例并配置自己的 API Key；  
-- 若需要参考原始 Demo，可访问 upstream 部署（若仍在线）：https://smart-drawio-next.vercel.app/
+- 若需要参考原始 Demo，可访问 upstream 部署（若仍在线）：https://drawio.wolfholo.top/
 
-## 效果预览
-
-![Transformer](./public/images/transformer.png)
-![Swin-Transformer](./public/images/swin.png)
-![CLIP](./public/images/clip.png)
-![ProSST](./public/images/prosst.png)
 
 ## 项目简介
-
-Drawio 是基于 [smart-drawio-next](https://github.com/yunshenwuchuxun/smart-drawio-next) 的二次开发版本，由 WolfHolo 团队重新打磨品牌与视觉：
 
 - **AI 驱动的图表生成**：通过文本或图片提示，自动生成 Draw.io XML / JSON；
 - **所见即所得**：Monaco 编辑器与 Draw.io iframe 联动，实时同步编辑与预览；
