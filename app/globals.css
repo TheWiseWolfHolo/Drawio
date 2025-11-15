@@ -95,6 +95,8 @@
   --input: #d7c7c0;
   --accent: #e6cfc5;
   --accent-foreground: #55382f;
+  --accent-soft: #f1dfd5;
+  --accent-strong: #d9a28a;
   --primary: #c96442;
   --primary-hover: #b55839;
   --primary-active: #9c4b34;
@@ -135,6 +137,8 @@
   --color-primary-active: var(--primary-active);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-strong: var(--accent-strong);
   --color-ring: var(--ring);
   --color-white: var(--white);
   --color-canvas: var(--canvas);

@@ -1,6 +1,7 @@
 'use client';
 
 import { Editor } from '@monaco-editor/react';
+import Spinner from './ui/Spinner';
 
 export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdvancedOptimize, onClear, jsonError, onClearJsonError, isGenerating, isApplyingCode, isOptimizingCode, isTruncated, canContinue, onContinue }) {
   return (
@@ -15,7 +16,7 @@ export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdva
           >
             清除
             {isGenerating && (
-              <div className="w-3 h-3 border border-muted-foreground border-t-transparent rounded-full animate-spin"></div>
+              <Spinner size="sm" color="primary" />
             )}
           </button>
           {isTruncated && (
@@ -27,7 +28,7 @@ export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdva
             >
               {isGenerating ? (
                 <>
-                  <div className="w-3 h-3 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
+                  <Spinner size="sm" color="white" />
                   <span>生成中...</span>
                 </>
               ) : (
@@ -50,12 +51,13 @@ export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdva
           <button
             onClick={onOptimize}
             disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-            className="px-4 py-2 text-sm font-medium rounded bg-accent text-accent-foreground hover:opacity-90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2 shadow-sm"
+            className="px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/40 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
+            style={{ backgroundColor: 'var(--color-accent-soft)' }}
             title="优化图标布局和箭头连接"
           >
             {isOptimizingCode ? (
               <>
-                <div className="w-3 h-3 border-2 border-accent-foreground border-t-transparent rounded-full animate-spin"></div>
+                <Spinner size="sm" color="primary" />
                 <span>优化中...</span>
               </>
             ) : (
@@ -70,7 +72,8 @@ export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdva
           <button
             onClick={onAdvancedOptimize}
             disabled={isGenerating || isApplyingCode || isOptimizingCode || !code.trim()}
-            className="px-4 py-2 text-sm font-medium rounded bg-primary text-primary-foreground hover:bg-primary-hover disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2 shadow-sm"
+            className="px-4 py-2 text-sm font-medium rounded text-accent-foreground border border-accent/50 hover:border-accent transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
+            style={{ backgroundColor: 'var(--color-accent-strong)' }}
             title="高级优化选项"
           >
             <span>高级优化</span>
@@ -82,7 +85,7 @@ export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdva
           >
             {isApplyingCode ? (
               <>
-                <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <Spinner size="sm" color="white" />
                 <span>应用中...</span>
               </>
             ) : (
@@ -98,9 +101,7 @@ export default function CodeEditor({ code, onChange, onApply, onOptimize, onAdva
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
-                {isGenerating && (
-                  <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
-                )}
+                {isGenerating && <Spinner size="sm" color="white" />}
               </>
             )}
           </button>
