@@ -24,6 +24,14 @@ const PRESET_SUGGESTIONS = [
 export default function OptimizationPanel({ isOpen, onClose, onOptimize, isOptimizing }) {
   const [selectedSuggestions, setSelectedSuggestions] = useState([]);
   const [customSuggestion, setCustomSuggestion] = useState('');
+  const allSelected = selectedSuggestions.length === PRESET_SUGGESTIONS.length;
+  const handleSelectAll = () => {
+    if (allSelected) {
+      setSelectedSuggestions([]);
+    } else {
+      setSelectedSuggestions(PRESET_SUGGESTIONS.map((s) => s.id));
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -86,7 +94,16 @@ export default function OptimizationPanel({ isOpen, onClose, onOptimize, isOptim
         <div className="flex-1 overflow-y-auto px-6 py-4">
           {/* Preset Suggestions */}
           <div className="mb-6">
-            <h3 className="text-sm font-medium text-foreground mb-3">预设优化建议</h3>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-medium text-foreground">预设优化建议</h3>
+              <button
+                onClick={handleSelectAll}
+                disabled={isOptimizing}
+                className="text-xs px-2 py-1 rounded border border-border bg-card text-foreground hover:bg-muted disabled:bg-muted disabled:text-muted-foreground transition-colors"
+              >
+                {allSelected ? '清空选择' : '全选'}
+              </button>
+            </div>
             <div className="space-y-2">
               {PRESET_SUGGESTIONS.map(suggestion => (
                 <label
